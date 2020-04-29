@@ -1,0 +1,57 @@
+# Build and Release Folders
+cmake-build-debug/
+cmake-build-release/
+bin-debug/
+bin-release/
+[Oo]bj/
+[Bb]in/
+build/
+
+# Other files and folders
+.settings/
+.vscode/
+.idea/
+
+*.pyc
+*.pwf
+*.git
+*.pt
+*.model
+*.pb
+*.h5
+*.zip
+*.tar
+*.7z
+
+# Prerequisites
+*.d
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
