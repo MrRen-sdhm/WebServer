@@ -190,44 +190,41 @@ bool http_conn::read() {
  */
 http_conn::HTTP_CODE http_conn::parse_request_line(char* text) {
     m_url = strpbrk(text, " \t");
-    if (! m_url)
-    {
+    if (!m_url) {
         return BAD_REQUEST;
     }
     *m_url++ = '\0';
 
     char* method = text;
-    if (strcasecmp(method, "GET") == 0)
-    {
+    if (strcasecmp(method, "GET") == 0) {
         m_method = GET;
     }
-    else
-    {
+    else {
         return BAD_REQUEST;
     }
 
     m_url += strspn(m_url, " \t");
     m_version = strpbrk(m_url, " \t");
-    if (! m_version)
-    {
+    if (!m_version) {
         return BAD_REQUEST;
     }
     *m_version++ = '\0';
     m_version += strspn(m_version, " \t");
-    if (strcasecmp(m_version, "HTTP/1.1") != 0)
-    {
+    if (strcasecmp(m_version, "HTTP/1.1") != 0) {
         return BAD_REQUEST;
     }
 
-    if (strncasecmp(m_url, "http://", 7) == 0)
-    {
+    if (strncasecmp(m_url, "http://", 7) == 0) {
         m_url += 7;
         m_url = strchr(m_url, '/');
     }
 
-    if (! m_url || m_url[0] != '/')
-    {
+    if (!m_url || m_url[0] != '/') {
         return BAD_REQUEST;
+    }
+
+    if(strcmp(m_url, "/") == 0) { // 若m_url为"/"，即未输入url，默认添加index.html
+        strcat(m_url, "index.html");
     }
 
     m_check_state = CHECK_STATE_HEADER;
@@ -272,7 +269,7 @@ http_conn::HTTP_CODE http_conn::parse_headers(char* text) {
         m_host = text;
     }
     else {
-        printf("oop! unknow header %s\n", text);
+        printf("oop!unknow header %s\n", text);
     }
 
     return NO_REQUEST;
@@ -364,7 +361,7 @@ http_conn::HTTP_CODE http_conn::do_request() {
         return NO_RESOURCE;
     }
 
-    if (! (m_file_stat.st_mode & S_IROTH))
+    if (!(m_file_stat.st_mode & S_IROTH))
     {
         return FORBIDDEN_REQUEST;
     }
@@ -486,7 +483,7 @@ bool http_conn::process_write(HTTP_CODE ret) {
         {
             add_status_line(500, error_500_title);
             add_headers(strlen(error_500_form));
-            if (! add_content(error_500_form))
+            if (!add_content(error_500_form))
             {
                 return false;
             }
@@ -496,7 +493,7 @@ bool http_conn::process_write(HTTP_CODE ret) {
         {
             add_status_line(400, error_400_title);
             add_headers(strlen(error_400_form));
-            if (! add_content(error_400_form))
+            if (!add_content(error_400_form))
             {
                 return false;
             }
@@ -506,7 +503,7 @@ bool http_conn::process_write(HTTP_CODE ret) {
         {
             add_status_line(404, error_404_title);
             add_headers(strlen(error_404_form));
-            if (! add_content(error_404_form))
+            if (!add_content(error_404_form))
             {
                 return false;
             }
@@ -516,7 +513,7 @@ bool http_conn::process_write(HTTP_CODE ret) {
         {
             add_status_line(403, error_403_title);
             add_headers(strlen(error_403_form));
-            if (! add_content(error_403_form))
+            if (!add_content(error_403_form))
             {
                 return false;
             }
@@ -539,7 +536,7 @@ bool http_conn::process_write(HTTP_CODE ret) {
             {
                 const char* ok_string = "<html><body></body></html>";
                 add_headers(strlen(ok_string));
-                if (! add_content(ok_string))
+                if (!add_content(ok_string))
                 {
                     return false;
                 }

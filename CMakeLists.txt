@@ -1,10 +1,10 @@
-cmake_minimum_required(VERSION 3.15)
+cmake_minimum_required(VERSION 3.10)
 project(WebServer)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_FLAGS "-O0 -Wno-deprecated -Wenum-compare -std=c++11")
 
-aux_source_directory(. SOURCE_FILES)
+#set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_FLAGS_DEBUG "-O0")
+set(CMAKE_CXX_FLAGS_RELEASE "-O0")
 
-add_executable(WebServer ${SOURCE_FILES})
-
-target_link_libraries(WebServer pthread)
+add_subdirectory(WebServer)
